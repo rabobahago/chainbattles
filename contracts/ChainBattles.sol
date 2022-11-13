@@ -69,4 +69,15 @@ contract ChainBattles is ERC721URIStorage {
         tokenIdtoLevels[newItemId] = 0;
         _setTokenURI(newItemId, getTokenURI(newItemId));
     }
+
+    function train(uint256 tokenId) public {
+        require(_exists(tokenId), "Please use an existing token");
+        require(
+            ownerOf(tokenId) == msg.sender,
+            "you must own this token to train"
+        );
+        uint currentLevel = tokenIdtoLevels[tokenId];
+        tokenIdtoLevels[tokenId] = currentLevel + 1;
+        _setTokenURI(tokenId, getTokenURI(tokenId));
+    }
 }
