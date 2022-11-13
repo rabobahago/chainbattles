@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 contract ChainBattles is ERC721URIStorage {
     using Strings for uint256;
     using Counters for Counters.Counter;
-    Counters.Counter private _tokenId;
+    Counters.Counter private _tokenIds;
     mapping(uint256 => uint256) public tokenIdtoLevels;
 
     constructor() ERC721URIStorage("Chain Battles", "CBTLS") {}
@@ -60,5 +60,13 @@ contract ChainBattles is ERC721URIStorage {
                     Base64.encode(dataURI)
                 )
             );
+    }
+
+    function mint() public {
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        selfmint(msg.sender, newItemId);
+        tokenIdtoLevels[newItemId] = 0;
+        _setTokenURI(newItemId, getTokenURI(newItemId));
     }
 }
